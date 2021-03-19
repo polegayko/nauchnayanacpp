@@ -20,7 +20,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           command: |
-            cd ${{ secrets.DEPLOY_KEY }}
+            cd ${{ secrets.DEPLOY_DIR }}
             git fetch --all
             git reset --hard origin/main
             bash ./scripts/bc.sh
