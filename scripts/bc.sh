@@ -1,4 +1,4 @@
-SCRIPT_PATH = $0
+SCRIPT_PATH=$0
 echo $SCRIPT_PATH
 
 cd $SCRIPT_PATH
@@ -9,4 +9,3 @@ cd build
 
 cmake ..
 cmake --build .
-
