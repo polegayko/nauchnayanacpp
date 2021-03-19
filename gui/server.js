@@ -29,13 +29,16 @@ app.post('/calc', async (req,res) => {
         {
             let text = fs.readFileSync(path.resolve(APP_PATH,'results.csv'),'utf-8');
             let lines = text.split('\n');
-            lines = lines.filter(l => l.length)
-            let tokens = lines.map(l => l.split(';'));
-            let n = tokens[0].length;
-            let cols = [];
-            for(let i = 0; i < n; ++i) cols.push([]);
-            tokens.map(t => { for(let i = 0; i < n; ++i) cols[i].push(t[i]); });
-            cdata = cols;
+            if(lines.length)
+            {
+                lines = lines.filter(l => l.length)
+                let tokens = lines.map(l => l.split(';'));
+                let n = tokens[0].length;
+                let cols = [];
+                for(let i = 0; i < n; ++i) cols.push([]);
+                tokens.map(t => { for(let i = 0; i < n; ++i) cols[i].push(t[i]); });
+                cdata = cols;
+            }
         }
         res.json({ code : code, data : cdata });
         exited = true;

@@ -7,6 +7,7 @@ using namespace std;
 
 int main()
 {
+	// Выставляем русский язык
 	setlocale(LC_ALL, "Russian");
 	double x0;
 	double y0;

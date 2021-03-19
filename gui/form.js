@@ -37,7 +37,7 @@ function readparams() {
 
 function loaddata(res) {
     if(res.code !== 0) return;
-    build({ x : res.data[2], y : res.data[0] });
+    build({ x : res.data[2], y : res.data[1] });
 }
 
 document.getElementById('calc').onclick = () => {
