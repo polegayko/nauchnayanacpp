@@ -24,13 +24,13 @@ int main()
 	double eta0;
 	double eta1;
 	double Rm;
-	cout << "Введите R:";
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ R:";
 	cin >> R;
-	cout << "Введите w:";
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ w:";
 	cin >> w;
-	cout << "Введите шаг:";
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ:";
 	cin >> step;
-	cout << "Введите координаты M0:";
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ M0:";
 	cin >> x0;
 	cin >> y0;
 	vector <double> x;
@@ -39,8 +39,6 @@ int main()
 
 	ofstream myfile;
 	myfile.open("results.csv");
-	
-	
 
 	m = 0;
 	gamma = step;

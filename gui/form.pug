@@ -1,0 +1,31 @@
+html
+    head
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        style
+            include ./form.css
+    body
+        .main
+            .description
+                h1 НАУЧНАЯ РАБОТА
+                h2 ПОЛЕГАЙКО ВИКТОР
+                p Научная работа о том, что что-то там считается и решается и вообще все круто. Поставьте 3 пожалуйста
+            .b-part
+                .params#params
+                    label(for="R") R
+                    input#R(type="text", name="r_param_input", value="1.0")
+                    label(for="W") W
+                    input#W(type="text", name="w_param_input", value="1.0")
+                    label(for="Step") Step
+                    input#Step(type="text", name="step_param_input", value="1.0") 
+                    label(for="x0") x0
+                    input#x0(type="text", name="x0_param_input", value="1.0") 
+                    label(for="y0") y0
+                    input#y0(type="text", name="y0_param_input", value="1.0") 
+                    .btn#calc Посчитать
+                .charts
+                    .smallone#ch
+            
+
+        script
+            include ./form.js
