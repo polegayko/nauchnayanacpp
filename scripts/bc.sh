@@ -1,9 +1,10 @@
-SCRIPT_PATH=$0
-echo $SCRIPT_PATH
+SCRIPT_PATH=$(dirname "$0")
 
 cd $SCRIPT_PATH
 cd ..
-rm build
+if [ -d $SCRIPT_PATH/build ]; then
+  rm -rf build 
+if
 mkdir build
 cd build
 
