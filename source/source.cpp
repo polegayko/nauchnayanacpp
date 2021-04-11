@@ -7,7 +7,6 @@ using namespace std;
 
 int main()
 {
-	// Выставляем русский язык
 	setlocale(LC_ALL, "Russian");
 	double x0;
 	double y0;
@@ -25,22 +24,44 @@ int main()
 	double eta0;
 	double eta1;
 	double Rm;
-	cout << "������� R:";
+	double Eps;
+	double taum_p;
+	cout << "Введите R:";
 	cin >> R;
-	cout << "������� w:";
+	cout << "Введите w:";
 	cin >> w;
-	cout << "������� ���:";
+	cout << "Введите шаг:";
 	cin >> step;
-	cout << "������� ���������� M0:";
+	cout << "Введите координаты M0:";
 	cin >> x0;
 	cin >> y0;
-	vector <double> x;
-	vector <double> y;
-	vector <double> Gamma;
+	vector <double> xf4;
+	vector <double> xf3;
+	vector <double> xf6;
+	vector <double> xf5;
+	vector <double> yf4;
+	vector <double> yf3;
+	vector <double> yf6;
+	vector <double> yf5;
+	vector <double> Gammaf4;
+	vector <double> Gammaf3;
+	vector <double> Gammaf6;
+	vector <double> Gammaf5;
+	vector <double> xf6p;
+	vector <double> yf6p;
+	vector <double> Gammaf6p;
 
-	ofstream myfile;
-	myfile.open("results.csv");
 
+
+
+
+
+
+
+
+
+	taum_p = 0;
+	Eps = 0.00001;
 	m = 0;
 	gamma = step;
 
@@ -49,67 +70,125 @@ int main()
 		tau = pow((1 - w), -1)*(y0 + eta0);
 		y1 = R * eta0 + (w - 1)*(gamma - tau);
 		x1 = (R*eta0 + (w - 1)*(gamma - tau)*0.5)*(gamma - tau);
+		if ((x1 >= 0) && (tau <= gamma))
+		{
+			xf4.push_back(x1);
+			yf4.push_back(y1);
+			Gammaf4.push_back(gamma);
+		}
 
-
-		if (x1 < 0)
+		else
 		{
 			y1 = y0 + (w - 1)*gamma;
 			x1 = x0 + gamma * y0 + (w - 1)*pow(gamma, 2) / 2;
 			m = 0;
 			if (x1 < 0) goto next_cycle;
+			else
+			{
+				xf3.push_back(x1);
+				yf3.push_back(y1);
+				Gammaf3.push_back(gamma);
+			}
 		}
 
-		x.push_back(x1);
-		y.push_back(y1);
-		Gamma.push_back(gamma);
+
 		x2 = x1;
 		y2 = x1;
 
+		taum = 0;
 		do
 		{
-			do
+			taum_p = taum;
+			m++;
+			x1 = x2;
+			y1 = y2;
+			Rm = pow(R, m);
+			double g2;
+			g2 = pow((2 - gamma), -1);
+			double bd;
 			{
-				m++;
-				x1 = x2;
-				y1 = y2;
-				Rm = pow(R, m);
-				long double g2;
-				g2 = pow((2 - gamma), -1);
-				long double bd;
-				{
-					bd = gamma * (w - 1) + 2;
-					bd = pow(bd, -1);
-				}
-				long double bd1;
-				bd1 = pow((R - 1), -1);
-				eta1 = (y2*y2 + 2 * (gamma*w*bd1 + 1)*x1);
-				eta1 = (eta1, 0.5);
-				taum = (2 - gamma)*bd*(y1 + bd1 * eta1*(1 + R - 2 * Rm));
-				y2 = Rm * eta1 - (2 - gamma - taum)*(gamma * w * g2 + 1);
-				x2 = Rm * eta1 - 0.5*(2 - gamma - taum)*(gamma * w*g2 + 1)*(2 - gamma - taum);
-			} while (x2 >= 0);
+				bd = gamma * (w - 1) + 2;
+				bd = pow(bd, -1);
+			}
+			double bd1;
+			bd1 = pow((R - 1), -1);
+			eta1 = (y2*y2 + 2 * (gamma*w*bd1 + 1)*x1);
+			eta1 = pow(eta1, 0.5);
+			taum = (2 - gamma)*bd*(y1 + bd1 * eta1*(1 + R - 2 * Rm));
+			y2 = Rm * eta1 - (2 - gamma - taum)*(gamma * w * g2 + 1);
+			x2 = Rm * eta1 - 0.5*(2 - gamma - taum)*(gamma * w*g2 + 1)*(2 - gamma - taum);
+			xf6.push_back(x2);
+			yf6.push_back(y2);
+			Gammaf6.push_back(gamma);
+		} while (((x2 >= 0) || ((taum >= 0) && (taum <= 2 - gamma))) && (abs(taum - taum_p) > Eps));
+
+		if (abs(taum - taum_p) > Eps)
+		{
 			x2 = x1 + (2 - gamma)*y1 - 0.5*gamma * (w - 1) + 2 * (2 - gamma);
-			y2 = y1 - (w - 1)*gamma - 2;
-			x.push_back(x2);
-			y.push_back(y2);
-			Gamma.push_back(gamma);
-		} while ((x2 >= 0) || (m <= 100));
-next_cycle:
+			if (x2 >= 0)
+			{
+				y2 = y1 - (w - 1)*gamma - 2;
+				xf5.push_back(x2);
+				yf5.push_back(y2);
+				Gammaf5.push_back(gamma);
+			}
+		}
+
+	next_cycle:
 		gamma = gamma + step;
 	} while (gamma < 2);
 
-	
-	for (int i = 0; i < x.size(); i++)
+	ofstream myfilef4;
+	myfilef4.open("resultsf4.csv");
+
+	for (int i = 0; i < xf4.size(); i++)
 	{
-		myfile << x[i]<<";"<<y[i]<<";"<<Gamma[i]<<"\n";
+		myfilef4 << xf4[i] << ";" << yf4[i] << ";" << Gammaf4[i] << "\n";
 	}
-	myfile.close();
+	myfilef4.close();
 
-	
+	ofstream myfilef3;
+	myfilef3.open("resultsf3.csv");
+
+	for (int i = 0; i < xf3.size(); i++)
+	{
+		myfilef3 << xf3[i] << ";" << yf3[i] << ";" << Gammaf3[i] << "\n";
+	}
+	myfilef3.close();
+
+	ofstream myfilef6;
+	myfilef6.open("resultsf6.csv");
+
+	for (int i = 0; i < xf6.size(); i++)
+	{
+		myfilef6 << xf6[i] << ";" << yf6[i] << ";" << Gammaf6[i] << "\n";
+	}
+	myfilef6.close();
+
+	ofstream myfilef5;
+	myfilef5.open("resultsf5.csv");
+
+	for (int i = 0; i < xf5.size(); i++)
+	{
+		myfilef5 << xf5[i] << ";" << yf5[i] << ";" << Gammaf5[i] << "\n";
+	}
+	myfilef5.close();
+
+	ofstream myfilef6p;
+	myfilef6p.open("resultsf6p.csv");
+
+	for (int i = 0; i < xf5.size(); i++)
+	{
+		myfilef6p << xf6p[i] << ";" << yf6p[i] << ";" << Gammaf6p[i] << "\n";
+	}
+	myfilef6p.close();
 
 
-	
-		
+
+
+
+
+
 
 
 }
