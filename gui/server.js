@@ -27,18 +27,9 @@ app.post('/calc', async (req,res) => {
         let cdata;
         if(code === 0)
         {
-            let text = fs.readFileSync(path.resolve(APP_PATH,'results.csv'),'utf-8');
-            let lines = text.split('\n');
-            if(lines.length)
-            {
-                lines = lines.filter(l => l.length)
-                let tokens = lines.map(l => l.split(';'));
-                let n = tokens[0].length;
-                let cols = [];
-                for(let i = 0; i < n; ++i) cols.push([]);
-                tokens.map(t => { for(let i = 0; i < n; ++i) cols[i].push(t[i]); });
-                cdata = cols;
-            }
+            let files = fs.readdirSync(APP_PATH);
+            files = files.filter(x => path.extname(x) === '.csv');
+            cdata = files.map(x => makeDataFromFile(x.split('.')[0]));
         }
         res.json({ code : code, data : cdata });
         exited = true;
@@ -59,3 +50,24 @@ app.post('/calc', async (req,res) => {
 });
 
 app.listen(4451,() => { console.log('Ready....') });
+
+function makeDataFromFile(name)
+{
+    let text = fs.readFileSync(path.resolve(APP_PATH,`${name}.csv`),'utf-8');
+    let lines = text.split('\n');
+    let cdata;
+    let output;
+    if(lines.length > 1)
+    {
+        lines = lines.filter(l => l.length)
+        let tokens = lines.map(l => l.split(';'));
+        let n = tokens[0].length;
+        let cols = [];
+        for(let i = 0; i < n; ++i) cols.push([]);
+        tokens.map(t => { for(let i = 0; i < n; ++i) cols[i].push(t[i]); });
+        cdata = cols;
+        output = { name : name, content : cdata };
+    }
+
+    return output;
+}

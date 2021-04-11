@@ -51,15 +51,6 @@ int main()
 	vector <double> yf6p;
 	vector <double> Gammaf6p;
 
-
-
-
-
-
-
-
-
-
 	taum_p = 0;
 	Eps = 0.00001;
 	m = 0;
@@ -177,18 +168,10 @@ int main()
 	ofstream myfilef6p;
 	myfilef6p.open("resultsf6p.csv");
 
-	for (int i = 0; i < xf5.size(); i++)
+	for (int i = 0; i < xf6p.size(); i++)
 	{
 		myfilef6p << xf6p[i] << ";" << yf6p[i] << ";" << Gammaf6p[i] << "\n";
 	}
 	myfilef6p.close();
-
-
-
-
-
-
-
-
 
 }
