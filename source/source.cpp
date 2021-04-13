@@ -50,6 +50,17 @@ int main()
 	vector <double> xf6p;
 	vector <double> yf6p;
 	vector <double> Gammaf6p;
+	int C1;
+	int C2;
+
+
+
+
+
+
+
+
+
 
 	taum_p = 0;
 	Eps = 0.00001;
@@ -84,9 +95,10 @@ int main()
 
 
 		x2 = x1;
-		y2 = x1;
+		y2 = y1;
 
 		taum = 0;
+		m = 0;
 		do
 		{
 			taum_p = taum;
@@ -108,12 +120,18 @@ int main()
 			taum = (2 - gamma)*bd*(y1 + bd1 * eta1*(1 + R - 2 * Rm));
 			y2 = Rm * eta1 - (2 - gamma - taum)*(gamma * w * g2 + 1);
 			x2 = Rm * eta1 - 0.5*(2 - gamma - taum)*(gamma * w*g2 + 1)*(2 - gamma - taum);
-			xf6.push_back(x2);
-			yf6.push_back(y2);
-			Gammaf6.push_back(gamma);
+
+			if (m > 1)
+			{
+				xf6.push_back(x1);
+				yf6.push_back(y1);
+				Gammaf6.push_back(gamma);
+			}
 		} while (((x2 >= 0) || ((taum >= 0) && (taum <= 2 - gamma))) && (abs(taum - taum_p) > Eps));
 
-		if (abs(taum - taum_p) > Eps)
+
+
+		if (m == 1)
 		{
 			x2 = x1 + (2 - gamma)*y1 - 0.5*gamma * (w - 1) + 2 * (2 - gamma);
 			if (x2 >= 0)
@@ -123,6 +141,16 @@ int main()
 				yf5.push_back(y2);
 				Gammaf5.push_back(gamma);
 			}
+		}
+		else if (abs(taum - taum_p) > Eps)
+		{
+			C1 = y1 - taum_p + 2 * log(taum_p);
+			C2 = x1 - (taum_p*taum_p)*0.5 + 2 * taum_p*log(taum_p);
+			y2 = (2 - gamma) - 2 * log(2 - gamma) + C1;
+			x2 = 0.5*(2 - gamma)*(2 - gamma) + (2 - gamma)*(C1 + 2) - 2 * (2 - gamma)*log(2 - gamma) + C2;
+			xf6p.push_back(x2);
+			yf6p.push_back(y2);
+			Gammaf6p.push_back(gamma);
 		}
 
 	next_cycle:
@@ -173,5 +201,13 @@ int main()
 		myfilef6p << xf6p[i] << ";" << yf6p[i] << ";" << Gammaf6p[i] << "\n";
 	}
 	myfilef6p.close();
+
+
+
+
+
+
+
+
 
 }
