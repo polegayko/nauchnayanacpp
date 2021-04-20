@@ -194,4 +194,5 @@ int main()
 		myfilef6p << xf6p[i] << ";" << yf6p[i] << ";" << Gammaf6p[i] << "\n";
 	}
 	myfilef6p.close();
+
 }
