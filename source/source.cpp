@@ -50,6 +50,11 @@ int main()
 	vector <double> xf6p;
 	vector <double> yf6p;
 	vector <double> Gammaf6p;
+	int C1;
+	int C2;
+	double g2;
+	double bd;
+	double bd1;
 
 	taum_p = 0;
 	Eps = 0.00001;
@@ -58,10 +63,10 @@ int main()
 
 	do {
 		eta0 = pow((y0*y0 - 2 * (w - 1)*x0), 0.5);
-		tau = pow((1 - w), -1)*(y0 + eta0);
+		tau = 1 / (1 - w)*(y0 + eta0);
 		y1 = R * eta0 + (w - 1)*(gamma - tau);
 		x1 = (R*eta0 + (w - 1)*(gamma - tau)*0.5)*(gamma - tau);
-		if ((x1 >= 0) && (tau <= gamma))
+		if ((x1 >= 0) && (tau < gamma) && (tau >= 0))
 		{
 			xf4.push_back(x1);
 			yf4.push_back(y1);
@@ -84,9 +89,10 @@ int main()
 
 
 		x2 = x1;
-		y2 = x1;
+		y2 = y1;
 
 		taum = 0;
+		m = 0;
 		do
 		{
 			taum_p = taum;
@@ -94,26 +100,31 @@ int main()
 			x1 = x2;
 			y1 = y2;
 			Rm = pow(R, m);
-			double g2;
-			g2 = pow((2 - gamma), -1);
-			double bd;
-			{
-				bd = gamma * (w - 1) + 2;
-				bd = pow(bd, -1);
-			}
-			double bd1;
-			bd1 = pow((R - 1), -1);
+
+			g2 = 1 / (2 - gamma);
+
+
+			bd = 1 / (gamma * (w - 1) + 2);
+
+
+			bd1 = 1 / (R - 1);
 			eta1 = (y2*y2 + 2 * (gamma*w*bd1 + 1)*x1);
 			eta1 = pow(eta1, 0.5);
 			taum = (2 - gamma)*bd*(y1 + bd1 * eta1*(1 + R - 2 * Rm));
 			y2 = Rm * eta1 - (2 - gamma - taum)*(gamma * w * g2 + 1);
 			x2 = Rm * eta1 - 0.5*(2 - gamma - taum)*(gamma * w*g2 + 1)*(2 - gamma - taum);
-			xf6.push_back(x2);
-			yf6.push_back(y2);
-			Gammaf6.push_back(gamma);
+
+			if (m > 1)
+			{
+				xf6.push_back(x1);
+				yf6.push_back(y1);
+				Gammaf6.push_back(gamma);
+			}
 		} while (((x2 >= 0) || ((taum >= 0) && (taum <= 2 - gamma))) && (abs(taum - taum_p) > Eps));
 
-		if (abs(taum - taum_p) > Eps)
+
+
+		if (m == 1)
 		{
 			x2 = x1 + (2 - gamma)*y1 - 0.5*gamma * (w - 1) + 2 * (2 - gamma);
 			if (x2 >= 0)
@@ -123,6 +134,16 @@ int main()
 				yf5.push_back(y2);
 				Gammaf5.push_back(gamma);
 			}
+		}
+		else if (abs(taum - taum_p) > Eps)
+		{
+			C1 = y1 - taum_p + 2 * log(taum_p);
+			C2 = x1 - (taum_p*taum_p)*0.5 + 2 * taum_p*log(taum_p);
+			y2 = (2 - gamma) - 2 * log(2 - gamma) + C1;
+			x2 = 0.5*(2 - gamma)*(2 - gamma) + (2 - gamma)*(C1 + 2) - 2 * (2 - gamma)*log(2 - gamma) + C2;
+			xf6p.push_back(x2);
+			yf6p.push_back(y2);
+			Gammaf6p.push_back(gamma);
 		}
 
 	next_cycle:
@@ -173,5 +194,4 @@ int main()
 		myfilef6p << xf6p[i] << ";" << yf6p[i] << ";" << Gammaf6p[i] << "\n";
 	}
 	myfilef6p.close();
-
 }
