@@ -63,12 +63,6 @@ int main()
 	double bd;
 	double bd1;
 
-
-
-
-
-
-
 	taum_p = 0;
 	Eps = 0.00001;
 	m = 0;
@@ -221,4 +215,7 @@ int main()
 
 
 
+
 } 
+
+

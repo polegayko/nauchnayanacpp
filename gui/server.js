@@ -44,6 +44,8 @@ app.post('/calc', async (req,res) => {
     calcapp.stdin.write(req.body.Step + '\n');
     calcapp.stdin.write(req.body.x0 + '\n');
     calcapp.stdin.write(req.body.y0 + '\n');
+    calcapp.stdin.write(req.body.n + '\n');
+    calcapp.stdin.write(req.body.k + '\n');
 
     setTimeout(() => { if(!exited) calcapp.kill(); }, 3000); 
 
