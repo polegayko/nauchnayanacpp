@@ -14,6 +14,8 @@ int main()
 	double y1;
 	double x2;
 	double y2;
+	double xOrig;
+	double yOrig;
 	int m;
 	double step;
 	double gamma;
@@ -37,6 +39,8 @@ int main()
 	cout << "Введите координаты M0:";
 	cin >> x0;
 	cin >> y0;
+	xOrig = x0;
+	yOrig = y0;
 	cout << "Введите n:";
 	cout << "Введите k:";
 	cin >> n;
@@ -159,6 +163,8 @@ int main()
 			y0 = y2;
 		}
 	next_cycle:
+		x0 = xOrig;
+		y0 = yOrig;
 		gamma = gamma + step;
 	} while (gamma < 2);
 
@@ -216,6 +222,6 @@ int main()
 
 
 
-} 
+}
 
 
