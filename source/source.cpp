@@ -89,7 +89,7 @@ int main()
 			else
 			{
 				y1 = y0 + (w - 1)*gamma;
-				x1 = x0 + gamma * y0 + (w - 1)*pow(gamma, 2) / 2;
+				x1 = x0 + gamma * y0 + (w - 1)*gamma*gamma / 2;
 				m = 0;
 				if (x1 < 0) goto next_cycle;
 				else
@@ -137,28 +137,34 @@ int main()
 			} while (((x2 >= 0) || ((taum >= 0) && (taum <= 2 - gamma))) && (abs(taum - taum_p) > Eps));
 
 
-			if (ix > n - k)
-				if (m == 1)
+
+			if (m == 1)
+			{
+				x2 = x1 + (2 - gamma)*y1 - 0.5*gamma * (w - 1) + 2 * (2 - gamma);
+				if (x2 >= 0)
 				{
-					x2 = x1 + (2 - gamma)*y1 - 0.5*gamma * (w - 1) + 2 * (2 - gamma);
-					if (x2 >= 0)
+					y2 = y1 - (w - 1)*gamma - 2;
+					if (ix > n - k)
 					{
-						y2 = y1 - (w - 1)*gamma - 2;
 						xf5.push_back(x2);
 						yf5.push_back(y2);
 						Gammaf5.push_back(gamma);
 					}
 				}
-				else if (abs(taum - taum_p) > Eps)
+			}
+			else if (abs(taum - taum_p) > Eps)
+			{
+				C1 = y1 - taum_p + 2 * log(taum_p);
+				C2 = x1 - (taum_p*taum_p)*0.5 + 2 * taum_p*log(taum_p);
+				y2 = (2 - gamma) - 2 * log(2 - gamma) + C1;
+				x2 = 0.5*(2 - gamma)*(2 - gamma) + (2 - gamma)*(C1 + 2) - 2 * (2 - gamma)*log(2 - gamma) + C2;
+				if (ix > n - k)
 				{
-					C1 = y1 - taum_p + 2 * log(taum_p);
-					C2 = x1 - (taum_p*taum_p)*0.5 + 2 * taum_p*log(taum_p);
-					y2 = (2 - gamma) - 2 * log(2 - gamma) + C1;
-					x2 = 0.5*(2 - gamma)*(2 - gamma) + (2 - gamma)*(C1 + 2) - 2 * (2 - gamma)*log(2 - gamma) + C2;
 					xf6p.push_back(x2);
 					yf6p.push_back(y2);
 					Gammaf6p.push_back(gamma);
 				}
+			}
 			x0 = x2;
 			y0 = y2;
 		}
