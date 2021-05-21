@@ -30,6 +30,7 @@ int main()
 	double taum_p;
 	int n;
 	int k;
+	int ih;
 	cout << "Введите R:";
 	cin >> R;
 	cout << "Введите w:";
@@ -60,6 +61,9 @@ int main()
 	vector <double> xf6p;
 	vector <double> yf6p;
 	vector <double> Gammaf6p;
+	vector <double> Gammafih;
+	vector <double> xfih;
+	vector <double> yfih;
 	int C1;
 	int C2;
 
@@ -71,12 +75,20 @@ int main()
 	Eps = 0.00001;
 	m = 0;
 	gamma = step;
+	ih = 0;
 
 	do {
 		for (int ix = 1; ix <= n; ix++)
 		{
 			eta0 = pow((y0*y0 - 2 * (w - 1)*x0), 0.5);
-			tau = 1 / (1 - w)*(y0 + eta0);
+			if (ih = 0)
+			{
+				tau = 1 / (1 - w)*(y0 + eta0);
+			}
+			else
+			{
+				tau = 0;
+			}
 			y1 = R * eta0 + (w - 1)*(gamma - tau);
 			x1 = (R*eta0 + (w - 1)*(gamma - tau)*0.5)*(gamma - tau);
 			if ((x1 >= 0) && (tau < gamma) && (tau >= 0))
@@ -164,6 +176,18 @@ int main()
 					yf6p.push_back(y2);
 					Gammaf6p.push_back(gamma);
 				}
+				else
+				{
+					if (ix > n - k)
+					{
+						xfih.push_back(x2);
+						yfih.push_back(y2);
+						Gammafih.push_back(gamma);
+					}
+					x2 = 0;
+					y2 = 0;
+					ih = 1;
+				}
 			}
 			x0 = x2;
 			y0 = y2;
@@ -218,6 +242,15 @@ int main()
 		myfilef6p << xf6p[i] << ";" << yf6p[i] << ";" << Gammaf6p[i] << "\n";
 	}
 	myfilef6p.close();
+
+	ofstream myfilefih;
+	myfilefih.open("resultsfih.csv");
+
+	for (int i = 0; i < xfih.size(); i++)
+	{
+		myfilefih << xfih[i] << ";" << yfih[i] << ";" << Gammafih[i] << "\n";
+	}
+	myfilefih.close();
 
 
 
