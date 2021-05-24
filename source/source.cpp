@@ -91,7 +91,7 @@ int main()
 			}
 			y1 = R * eta0 + (w - 1)*(gamma - tau);
 			x1 = (R*eta0 + (w - 1)*(gamma - tau)*0.5)*(gamma - tau);
-			if ((x1 >= 0) && (tau < gamma) && (tau >= 0) && (ix > n - k))
+			if ((x1 >= 0) && (tau < gamma) && (tau >= 0))
 			{
 				xf4.push_back(x1);
 				yf4.push_back(y1);
@@ -104,7 +104,7 @@ int main()
 				x1 = x0 + gamma * y0 + (w - 1)*gamma*gamma / 2;
 				m = 0;
 				if (x1 < 0) goto next_cycle;
-				else if (ix > n - k)
+				else
 				{
 					xf3.push_back(x1);
 					yf3.push_back(y1);
