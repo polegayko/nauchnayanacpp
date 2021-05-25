@@ -17,7 +17,11 @@ function createdata(ctx)
             x : c.x,
             y : c.y,
             name : c.name,
-            mode : 'markers'
+            mode : 'markers',
+            marker: {
+                size: 2,
+            }
+          },
         })
     };
 
