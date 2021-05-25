@@ -21,7 +21,6 @@ function createdata(ctx)
             marker: {
                 size: 2,
             }
-          },
         })
     };
 
