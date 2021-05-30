@@ -51,7 +51,7 @@ function readparams() {
 function loaddata(res) {
     if(res.code !== 0) return console.log('NOT ZERO RETURN CODE');
     res.data = res.data.filter(x => x);
-    let ctx = res.data.map(a => { return { x : a.content[2], y : a.content[1], name : a.name }; });
+    let ctx = res.data.map(a => { return { x : a.content[2], y : a.content[0], name : a.name }; });
     build(ctx);
 }
 
