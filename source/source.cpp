@@ -170,25 +170,28 @@ int main()
 				C2 = x1 - (taum_p*taum_p)*0.5 + 2 * taum_p*log(taum_p);
 				y2 = (2 - gamma) - 2 * log(2 - gamma) + C1;
 				x2 = 0.5*(2 - gamma)*(2 - gamma) + (2 - gamma)*(C1 + 2) - 2 * (2 - gamma)*log(2 - gamma) + C2;
+				if (x2 < 0) goto next_cycle;
 				if (ix > n - k)
 				{
 					xf6p.push_back(x2);
 					yf6p.push_back(y2);
 					Gammaf6p.push_back(gamma);
 				}
-				else
-				{
-					if (ix > n - k)
-					{
-						xfih.push_back(x2);
-						yfih.push_back(y2);
-						Gammafih.push_back(gamma);
-					}
-					x2 = 0;
-					y2 = 0;
-					ih = 1;
-				}
 			}
+			else
+			{
+				if (x2 < 0) goto next_cycle;
+				if (ix > n - k)
+				{
+					xfih.push_back(x2);
+					yfih.push_back(y2);
+					Gammafih.push_back(gamma);
+				}
+				x2 = 0;
+				y2 = 0;
+				ih = 1;
+			}
+
 			x0 = x2;
 			y0 = y2;
 		}
